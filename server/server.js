@@ -5,6 +5,8 @@
 
 var express = require('express');
 var mysql = require('mysql');
+var React = require('react');
+var Index = React.createFactory(require('../public/index')); // Depends on jsx build completing.
 
 /**
  * Create an express application.
@@ -12,7 +14,17 @@ var mysql = require('mysql');
 
 var app = express();
 
-app.get('/', function (req, res) {
+/**
+ * Serve static assets from the generated 'public' folder.
+ */
+
+app.use(express.static('public'));
+
+/**
+ * Proof of concept for mysql fetches.
+ */
+
+app.get('/mysql-hello', function (req, res) {
 	var connection = mysql.createConnection({
 		host: 'localhost',
 		user: 'root',
@@ -43,6 +55,15 @@ app.get('/', function (req, res) {
 	});
 
 	connection.end();
+});
+
+/**
+ * Proof of concept for rendering react on the server.
+ */
+
+app.get('/react-hello', function (req, res) {
+	var string = React.renderToString(Index());
+	res.send(string);
 });
 
 /**

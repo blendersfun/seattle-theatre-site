@@ -9,8 +9,17 @@
     "url": "https://github.com/blendersfun/seattle-theatre-site.git"
   },
   "main": "server/server.js",
+  "browserify": {
+    "transform": [
+      [
+        "reactify"
+      ]
+    ]
+  },
   "dependencies": {
     "express": "^4.10.6",
-    "mysql": "^2.5.4"
+    "mysql": "^2.5.4",
+    "react": "^0.12.2",
+    "reactify": "^0.17.1"
   }
 }
