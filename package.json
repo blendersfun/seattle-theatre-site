@@ -1,0 +1,16 @@
+{
+  "name": "seattle-theatre-website",
+  "description": "A site for finding theatrical productions in Seattle, and educating oneself about theatre art both generally, and as it pertains to the Seattle scene.",
+  "version": "0.0.0",
+  "engines": "0.10.34",
+  "author": "Aaron Moore",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blendersfun/seattle-theatre-site.git"
+  },
+  "main": "server/server.js",
+  "dependencies": {
+    "express": "^4.10.6",
+    "mysql": "^2.5.4"
+  }
+}
