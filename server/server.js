@@ -11,7 +11,7 @@ var Dispatcher = require('dispatchr')();
 var Q = require('q');
 
 var StaticBaseLayout = React.createFactory(require('../public/index'));
-var AppComponent = React.createFactory(require('../public/app'));
+var HomePage = React.createFactory(require('../public/pages/home/home'));
 var VenueStore = require('../public/pages/home/venueStore');
 var HomePageQueries = require('../public/pages/home/homeQueries.json');
 
@@ -54,7 +54,6 @@ function retrieveVenues (dispatcher) {
 				reject(err);
 			}
 
-			console.log('Rows!!', rows);
 			dispatcher.dispatch('VENUES_RETRIEVED', rows);
 			resolve();
 		});
@@ -71,16 +70,32 @@ app.get('/', function (req, res) {
 	var example = { 'one': 'two', 'three': '</script><script>alert("I am an attack! Ahhhh!!!");</script>' };
 
 	var dispatcher = new Dispatcher({});
-	retrieveVenues(dispatcher);
+	retrieveVenues(dispatcher).then(onFullfill, onReject);
 
-	var renderedApp = React.renderToString(AppComponent());
+	function onFullfill () {
+		try {
+			var renderedApp = React.renderToString(HomePage({ dispatcher: dispatcher }));
 
-	var renderedHtml = React.renderToStaticMarkup(StaticBaseLayout({
-		markup: renderedApp,
-		state: 'window.app = ' + serialize(example) + ';',
-		title: 'Title!'
-	}));
-	res.send(renderedHtml);
+			var renderedHtml = React.renderToStaticMarkup(StaticBaseLayout({
+				markup: renderedApp,
+				state: 'window.app = ' + serialize(dispatcher.dehydrate()) + ';',
+				title: 'Title!'
+			}));
+			res.send(renderedHtml);
+		} catch (e) {
+			onReject(e);
+		}
+	}
+
+	function onReject (reason) {
+		var renderedHtml = React.renderToStaticMarkup(StaticBaseLayout({
+			markup: 'Something went wrong: ' + reason,
+			state: 'window.app = null;',
+			title: 'Error!'
+		}));
+		res.send(renderedHtml);
+	}
+
 });
 
 /**

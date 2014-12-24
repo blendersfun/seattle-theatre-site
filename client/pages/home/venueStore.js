@@ -5,28 +5,62 @@
 
 var createStore = require('dispatchr/utils/createStore');
 
-/**
- * Private internal state.
- */
-
-var state = {
-	venues: []
-};
-
 module.exports = createStore({
     initialize: function () {
-    	console.log("The venueStore has been initialized!");
+    	this.state = {
+			venues: []
+		};
     },
     storeName: 'VenueStore',
     handlers: {
-    	'VENUES_RETRIEVED': function (payload) {
-			console.log('Venues have been retrieved! Payload: ', payload);
+    	'VENUES_RETRIEVED': function (rows) {
+    		var store = this.dispatcher.getStore('VenueStore');
+    		var venues = {};
 
-			state.venues = payload;
-			console.log(this.emit);
+    		for (var i = 0; i < rows.length; i++) {
+    			var row = rows[i], 
+    			    vid = row.venue_id,
+    			    venue = venues[vid],
+    			    performanceSpace = {
+    			    	id: row.space_id,
+    			    	name: row.space_name
+	    			};
+
+    			if (venue) {
+    				venue.performanceSpaces.push(performanceSpace);
+    			} else {
+	    			venues[vid] = {
+	    				id: vid,
+	    				name: row.venue_name,
+	    				performanceSpaces: [performanceSpace],
+    			    	address: {
+    			    		line1: row.line1,
+    			    		line2: row.line2,
+    			    		city: row.city,
+    			    		state: row.state,
+    			    		zip: row.zip
+    			    	}
+	    			}
+    			}
+    		}
+
+    		var venuesArray = [];
+    		for (var i in venues) {
+    			if (venues.hasOwnProperty(i)) {
+    				venuesArray.push(venues[i]);
+    			}
+    		}
+
+			store.state.venues = venuesArray;
 		}
     },
     getVenues: function () {
-    	return state.venues;
+    	return this.state.venues;
+    },
+    dehydrate: function () {
+    	return this.state;
+    },
+    rehydrate: function (state) {
+    	this.state = state;
     }
 });
