@@ -1,0 +1,5 @@
+retrieveVenues: >
+    SELECT a.*, v.name venue_name, ps.name space_name
+    FROM performance_space ps, venue v, address a
+    WHERE ps.venue_id = v.id
+    AND   v.address_id = a.id
