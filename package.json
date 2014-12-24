@@ -20,6 +20,7 @@
     "express": "^4.10.6",
     "mysql": "^2.5.4",
     "react": "^0.12.2",
-    "reactify": "^0.17.1"
+    "reactify": "^0.17.1",
+    "serialize-javascript": "^1.0.0"
   }
 }

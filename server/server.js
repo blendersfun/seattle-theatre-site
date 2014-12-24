@@ -4,9 +4,13 @@
  */
 
 var express = require('express');
+var serialize = require('serialize-javascript');
 var mysql = require('mysql');
 var React = require('react');
-var Index = React.createFactory(require('../public/index')); // Depends on jsx build completing.
+
+// React components, these depend on the jsx build completing:
+var StaticBaseLayout = React.createFactory(require('../public/index'));
+var AppComponent = React.createFactory(require('../public/app'));
 
 /**
  * Create an express application.
@@ -62,8 +66,16 @@ app.get('/mysql-hello', function (req, res) {
  */
 
 app.get('/react-hello', function (req, res) {
-	var string = React.renderToString(Index());
-	res.send(string);
+	var example = { 'one': 'two', 'three': '</script><script>alert("I am an attack! Ahhhh!!!");</script>' };
+
+	var renderedApp = React.renderToString(AppComponent());
+
+	var renderedHtml = React.renderToStaticMarkup(StaticBaseLayout({
+		markup: renderedApp,
+		state: 'window.app = ' + serialize(example) + ';',
+		title: 'Title!'
+	}));
+	res.send(renderedHtml);
 });
 
 /**
