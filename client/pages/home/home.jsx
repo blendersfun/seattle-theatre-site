@@ -9,10 +9,6 @@ module.exports = React.createClass({
 	render: function() {
 		var venues = this.props.dispatcher.getStore('VenueStore').getVenues();
 
-		venues.forEach(function (venue) {
-			console.log(venue);
-		});
-
 		return (
 			<div>
 				Home page. <br/>

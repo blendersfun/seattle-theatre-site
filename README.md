@@ -9,16 +9,15 @@ Currently the jsx build is done by hand. The concept is that the ./public/ folde
 
 ## Build Stuff, So Far:
 
-Was able to use browserify like this:
-browserify client/index.jsx public/index.js
-
-However, realized what I really wanted was a jsx -> js transform for server consumption. This worked:
+This is how to conduct a full rebuild. It is currently done by hand via the command line:
+```
+rm -R public/
 jsx -x jsx client/ public/
-I am also doing:
 jsx -x js client/ public/
-as a hacky way to copy plain js files over for the moment.
-
-I also am storing sql in yaml files for easy maintainance, so, coverting to json for js:
 yaml2json ./client/pages/home/homeQueries.yaml > ./public/pages/home/homeQueries.json
+browserify client/client.js > public/client.js
+```
 
-These commands require global installs of: browserify, react-tools, yamljs.
+Browserify must be done after jsx conversion. No modules require in jsx files. Instead, jsx is built into js and modules require the built copies. So, if the built copies don't exist yet, browserify will fail.
+
+This process depends on global installs of the following: browserify, react-tools, yamljs.
