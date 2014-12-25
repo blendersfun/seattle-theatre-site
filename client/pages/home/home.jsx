@@ -6,10 +6,24 @@
 var React = require('react');
 
 module.exports = React.createClass({
+	getInitialState: function () {
+		return {};
+	},
+	componentWillMount: function () {
+		var venueStore = this.props.dispatcher.getStore('VenueStore');
+		var me = this;
+		venueStore.on('DO_THING', function () {
+			me.setState({ abc: me.state.abc ? me.state.abc + 1 : 1 });
+		});
+	},
+	componentWillUnmount: function () {
+		var venueStore = this.props.dispatcher.getStore('VenueStore');
+		venueStore.removeAllListeners();
+	},
 	render: function() {
 		var venues = this.props.dispatcher.getStore('VenueStore').getVenues();
 
-		return (
+		var newResult = (
 			<div>
 				Home page. <br/>
 				VenueStore:
@@ -34,5 +48,7 @@ module.exports = React.createClass({
 				</ul>
 			</div>
 		);
+		
+		return newResult;
 	}
 });

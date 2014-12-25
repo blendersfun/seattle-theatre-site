@@ -52,6 +52,11 @@ module.exports = createStore({
     		}
 
 			store.state.venues = venuesArray;
+		},
+		'DO_THING': function () {
+    		var store = this.dispatcher.getStore('VenueStore');
+    		store.state.venues.pop();
+    		store.emit('DO_THING');
 		}
     },
     getVenues: function () {

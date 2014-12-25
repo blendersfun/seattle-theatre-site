@@ -67,8 +67,6 @@ function retrieveVenues (dispatcher) {
  */
 
 app.get('/', function (req, res) {
-	var example = { 'one': 'two', 'three': '</script><script>alert("I am an attack! Ahhhh!!!");</script>' };
-
 	var dispatcher = new Dispatcher({});
 	retrieveVenues(dispatcher).then(onFullfill, onReject);
 
