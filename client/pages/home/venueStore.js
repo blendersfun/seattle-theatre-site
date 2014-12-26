@@ -38,7 +38,9 @@ module.exports = createStore({
     			    		line2: row.line2,
     			    		city: row.city,
     			    		state: row.state,
-    			    		zip: row.zip
+    			    		zip: row.zip,
+    			    		lat: row.lat,
+    			    		lng: row.lng
     			    	}
 	    			}
     			}
@@ -53,10 +55,14 @@ module.exports = createStore({
 
 			store.state.venues = venuesArray;
 		},
-		'DO_THING': function () {
+		'KILL_THEATRE': function () {
     		var store = this.dispatcher.getStore('VenueStore');
     		store.state.venues.pop();
-    		store.emit('DO_THING');
+    		store.emit('KILL_THEATRE');
+		},
+		'MAP_READY': function (map) {
+    		var store = this.dispatcher.getStore('VenueStore');
+    		store.emit('MAP_READY', map);
 		}
     },
     getVenues: function () {

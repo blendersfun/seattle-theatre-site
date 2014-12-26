@@ -3,3 +3,14 @@ retrieveVenues: >
     FROM performance_space ps, venue v, address a
     WHERE ps.venue_id = v.id
     AND   v.address_id = a.id
+
+mapsBootstrap: >
+    function initialize() {
+    	var mapOptions = {
+    		center: { lat: 47.614848, lng: -122.3359059},
+    		zoom: 12
+    	};
+    	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    	dispatcher.dispatch('MAP_READY', map);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);

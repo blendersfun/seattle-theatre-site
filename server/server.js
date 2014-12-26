@@ -74,11 +74,13 @@ app.get('/', function (req, res) {
 		try {
 			var renderedApp = React.renderToString(HomePage({ dispatcher: dispatcher }));
 
-			var renderedHtml = React.renderToStaticMarkup(StaticBaseLayout({
-				markup: renderedApp,
-				state: 'window.app = ' + serialize(dispatcher.dehydrate()) + ';',
-				title: 'Title!'
-			}));
+			var renderedHtml = '<!DOCTYPE html>' + 
+				React.renderToStaticMarkup(StaticBaseLayout({
+					markup: renderedApp,
+					state: 'window.app = ' + serialize(dispatcher.dehydrate()) + ';',
+					title: 'Title!',
+					mapBootstrap: HomePageQueries.mapsBootstrap
+				}));
 			res.send(renderedHtml);
 		} catch (e) {
 			onReject(e);
@@ -86,11 +88,12 @@ app.get('/', function (req, res) {
 	}
 
 	function onReject (reason) {
-		var renderedHtml = React.renderToStaticMarkup(StaticBaseLayout({
-			markup: 'Something went wrong: ' + reason,
-			state: 'window.app = null;',
-			title: 'Error!'
-		}));
+		var renderedHtml = '<!DOCTYPE html>' + 
+			React.renderToStaticMarkup(StaticBaseLayout({
+				markup: 'Something went wrong: ' + reason,
+				state: 'window.app = null;',
+				title: 'Error!'
+			}));
 		res.send(renderedHtml);
 	}
 

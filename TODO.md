@@ -10,3 +10,4 @@ I've got the React/Flux app bootstrapping on the client and server. Data is comi
  x Verify that changing data updates via React as expected.
  - Build a component test harness.
  - Build v1 of the venue map.
+ - Pull in medium style guide, make a first draft of basic code layout for less. Pull in parts of bootstrap3.
