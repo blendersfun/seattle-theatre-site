@@ -11,18 +11,13 @@ module.exports = React.createClass({
 	},
 	componentWillMount: function () {
 		var venueStore = this.props.dispatcher.getStore('VenueStore');
-		var me = this;
-		venueStore.on('KILL_THEATRE', function () {
-			me.setState({ abc: me.state.abc ? me.state.abc + 1 : 1 });
-		});
-		venueStore.on('MAP_READY', function (map) {
-			me.map = map;
-			me.mapMarkers = {};
-			me.rerenderPins();	
-		});
+		var mapsStore = this.props.dispatcher.getStore('GoogleMapsStore');
+
+		venueStore.on('KILL_THEATRE', this.killTheatre);
+		mapsStore.on('GOOGLE_MAPS_READY', this.initializeMap);
 	},
 	componentDidUpdate: function () {
-		this.rerenderPins();	
+		this.updatePins();	
 	},
 	componentWillUnmount: function () {
 		var venueStore = this.props.dispatcher.getStore('VenueStore');
@@ -62,7 +57,23 @@ module.exports = React.createClass({
 
 		return newResult;
 	},
-	rerenderPins: function () {
+	killTheatre: function () {
+		this.setState({ abc: this.state.abc ? this.state.abc + 1 : 1 });
+	},
+	initializeMap: function () {
+		var mapOptions = {
+			center: { lat: 47.614848, lng: -122.3359059},
+			zoom: 12
+		};
+		var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+		try { window.map = map; } catch (e) {} // for test.
+
+		this.map = map;
+		this.mapMarkers = {};
+		this.updatePins();	
+	},
+	updatePins: function () {
 		var venues = this.props.dispatcher.getStore('VenueStore').getVenues();
 		if (this.map) {
 

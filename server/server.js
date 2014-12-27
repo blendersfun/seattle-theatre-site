@@ -13,6 +13,7 @@ var Q = require('q');
 var StaticBaseLayout = React.createFactory(require('../public/index'));
 var HomePage = React.createFactory(require('../public/pages/home/home'));
 var VenueStore = require('../public/pages/home/venueStore');
+var GoogleMapsStore = require('../public/pages/home/googleMapsStore');
 var HomePageQueries = require('../public/pages/home/homeQueries.json');
 
 /**
@@ -32,6 +33,7 @@ app.use(express.static('public'));
  */
 
 Dispatcher.registerStore(VenueStore);
+Dispatcher.registerStore(GoogleMapsStore);
 
 /**
  * Should be moved into an action handler, but for first-draft simplicity:
@@ -74,12 +76,19 @@ app.get('/', function (req, res) {
 		try {
 			var renderedApp = React.renderToString(HomePage({ dispatcher: dispatcher }));
 
+			var stateBootstrap = 
+				'window.app = ' + serialize(dispatcher.dehydrate()) + ';';
+
+			var googleMapsBootstrap =
+			    'function initialize() { dispatcher.dispatch(\'GOOGLE_MAPS_READY\'); } ' +
+				'google.maps.event.addDomListener(window, \'load\', initialize);'
+
 			var renderedHtml = '<!DOCTYPE html>' + 
 				React.renderToStaticMarkup(StaticBaseLayout({
 					markup: renderedApp,
-					state: 'window.app = ' + serialize(dispatcher.dehydrate()) + ';',
+					state: stateBootstrap,
 					title: 'Title!',
-					mapBootstrap: HomePageQueries.mapsBootstrap
+					googleMapsBootstrap: googleMapsBootstrap
 				}));
 			res.send(renderedHtml);
 		} catch (e) {
@@ -92,7 +101,8 @@ app.get('/', function (req, res) {
 			React.renderToStaticMarkup(StaticBaseLayout({
 				markup: 'Something went wrong: ' + reason,
 				state: 'window.app = null;',
-				title: 'Error!'
+				title: 'Error!',
+				googleMapsBootstrap: ''
 			}));
 		res.send(renderedHtml);
 	}

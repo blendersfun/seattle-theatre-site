@@ -6,6 +6,7 @@
 var React = require('react');
 var Dispatcher = require('dispatchr')();
 var VenueStore = require('../public/pages/home/venueStore');
+var GoogleMapsStore = require('../public/pages/home/googleMapsStore');
 var HomePage = React.createFactory(require('../public/pages/home/home'));
 
 window.React = React; // for chrome dev tool support
@@ -15,6 +16,7 @@ window.React = React; // for chrome dev tool support
  */
 
 Dispatcher.registerStore(VenueStore);
+Dispatcher.registerStore(GoogleMapsStore);
 
 /**
  * Bootstrap application.
