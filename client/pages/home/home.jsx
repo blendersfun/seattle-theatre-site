@@ -4,6 +4,8 @@
  */
 
 var React = require('react');
+var PinLabelModule = require('./pinLabel');
+var PinLabelOverlay = null;
 
 module.exports = React.createClass({
 	getInitialState: function () {
@@ -18,11 +20,12 @@ module.exports = React.createClass({
 		venueStore.on('MAP_READY', function (map) {
 			me.map = map;
 			me.mapMarkers = {};
-			me.rerenderPins();	
+			PinLabelOverlay = PinLabelModule(google.maps.OverlayView);
+			me.reconilePins();	
 		});
 	},
 	componentDidUpdate: function () {
-		this.rerenderPins();	
+		this.reconilePins();	
 	},
 	componentWillUnmount: function () {
 		var venueStore = this.props.dispatcher.getStore('VenueStore');
@@ -62,7 +65,7 @@ module.exports = React.createClass({
 
 		return newResult;
 	},
-	rerenderPins: function () {
+	reconilePins: function () {
 		var venues = this.props.dispatcher.getStore('VenueStore').getVenues();
 		if (this.map) {
 
@@ -92,9 +95,11 @@ module.exports = React.createClass({
 					var latlng = new google.maps.LatLng(venues[i].address.lat, venues[i].address.lng);
 					var marker = new google.maps.Marker({
 					    position: latlng,
-					    map: this.map,
-					    title: venues[i].name
+					    map: this.map
 					});
+					if (PinLabelOverlay) {
+						var label = new PinLabelOverlay(venues[i].name, latlng, this.map);
+					}
 					this.mapMarkers[venues[i].id] = marker;
 				}
 			}
