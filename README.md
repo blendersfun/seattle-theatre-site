@@ -12,11 +12,14 @@ Currently the jsx build is done by hand. The concept is that the ./public/ folde
 I'm using mysql via the XAMPP project. To create the table structure assumming XAMPP is installed on a mac with all default settings, navigate to the "db" folder, then:
 ```
 /Applications/xampp/xamppfiles/bin/mysql -u root
-mysql> connect [your-destination-database-name] localhost;
+mysql> connect [your-destination-database-name];
 mysql> source create_tables.sql
+mysql> source snapshot.sql
 ```
 
 I've symlinked mysql to a folder on the path, so I can just do "mysql" from the command-line and get to it. The destination database should be an empty database. If you have XAMPP installed, you can create one with phpMyAdmin.
+
+Note to self: I've established a convention of commenting the snapshot date at the top of the snapshot sql file. This will enable tracibility between db structure and a snapshot of seed data via github.
 
 ## Build Stuff, So Far:
 
