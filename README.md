@@ -34,4 +34,4 @@ browserify client/client.js > public/client.js
 
 Browserify must be done after jsx conversion. No modules require in jsx files. Instead, jsx is built into js and modules require the built copies. So, if the built copies don't exist yet, browserify will fail.
 
-This process depends on global installs of the following: browserify, react-tools, yamljs.
+This process depends on global installs of the following: react-tools, gulp.
