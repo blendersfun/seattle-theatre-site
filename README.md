@@ -12,7 +12,7 @@ Currently the jsx build is done by hand. The concept is that the ./public/ folde
 I'm using mysql via the XAMPP project. To create the table structure assumming XAMPP is installed on a mac with all default settings, navigate to the "db" folder, then:
 ```
 /Applications/xampp/xamppfiles/bin/mysql -u root
-mysql> connect [your-destination-database-name];
+mysql> connect seattle_theatre;
 mysql> source create_tables.sql
 mysql> source snapshot.sql
 ```

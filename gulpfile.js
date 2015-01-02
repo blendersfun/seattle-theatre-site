@@ -1,12 +1,13 @@
 var gulp = require('gulp');
-var del = require('del');
+var clean = require('gulp-clean');
 
 var paths = {
   scripts: ['client/**/*.js']
 };
 
 gulp.task('clean', function(callback) {
-  del(['build'], callback);
+  return gulp.src('public/**/*')
+    .pipe(clean());
 });
 
 gulp.task('build', ['clean'], function() {
