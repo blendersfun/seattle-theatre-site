@@ -1,3 +1,4 @@
+var browserify = require('gulp-browserify');
 var clean = require('gulp-clean');
 var gulp = require('gulp');
 var jsx = require('gulp-jsx');
@@ -29,6 +30,14 @@ gulp.task('build-queries', function() {
 gulp.task('build-js', function() {
   return gulp.src(paths.scripts)
     .pipe(jsx())
+    .pipe(gulp.dest('public'));
+});
+
+gulp.task('browserify', function() {
+  return gulp.src('client/client.js')
+    .pipe(browserify({
+        transform: reactify
+    }))
     .pipe(gulp.dest('public'));
 });
 
