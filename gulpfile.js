@@ -53,7 +53,7 @@ gulp.task('browserify', function() {
 
 // Rerun the task when a file changes.
 gulp.task('watch', function() {
-  var allFiles = [paths.scripts, paths.queries];
+  var allFiles = [paths.js, paths.jsx, paths.queries];
   gulp.watch(allFiles, ['build']);
 });
 
