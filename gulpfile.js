@@ -3,7 +3,9 @@ var clean = require('gulp-clean');
 var gulp = require('gulp');
 var jsx = require('gulp-jsx');
 var reactify = require('reactify');
+var run = require('gulp-run');
 var runSequence = require('run-sequence');
+var shell = require('gulp-shell');
 var yaml = require('gulp-yaml');
 
 var paths = {
@@ -37,11 +39,9 @@ gulp.task('copy-js', function() {
 });
 
 // Build the jsx files.
-gulp.task('build-jsx', function() {
-  return gulp.src(paths.jsx)
-    .pipe(jsx())
-    .pipe(gulp.dest('public'));
-});
+gulp.task('build-jsx', shell.task([
+    'jsx -x jsx client/ public/'
+]));
 
 gulp.task('browserify', function() {
   return gulp.src('client/client.js')
