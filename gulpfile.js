@@ -3,10 +3,12 @@ var clean = require('gulp-clean');
 var gulp = require('gulp');
 var jsx = require('gulp-jsx');
 var reactify = require('reactify');
+var runSequence = require('run-sequence');
 var yaml = require('gulp-yaml');
 
 var paths = {
-  scripts: ['client/**/*.js', 'client/**/*.jsx'],
+  js: ['client/**/*.js'],
+  jsx: ['client/**/*.jsx'],
   queries: ['client/**/*.yaml']
 };
 
@@ -17,7 +19,9 @@ gulp.task('clean', function(callback) {
 });
 
 // Top-level build task.
-gulp.task('build', ['build-js', 'build-queries']);
+gulp.task('build', function(callback) {
+    runSequence(['copy-js', 'build-jsx', 'build-queries'], 'browserify', callback);
+});
 
 // Convert the yaml to json.
 gulp.task('build-queries', function() {
@@ -26,9 +30,15 @@ gulp.task('build-queries', function() {
     .pipe(gulp.dest('public'));
 });
 
-// Build the js files.
-gulp.task('build-js', function() {
-  return gulp.src(paths.scripts)
+// Copy the js files.
+gulp.task('copy-js', function() {
+  return gulp.src(paths.js)
+    .pipe(gulp.dest('public'));
+});
+
+// Build the jsx files.
+gulp.task('build-jsx', function() {
+  return gulp.src(paths.jsx)
     .pipe(jsx())
     .pipe(gulp.dest('public'));
 });
