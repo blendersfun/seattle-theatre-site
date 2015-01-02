@@ -7,15 +7,6 @@ var React = require('react');
 
 module.exports = React.createClass({
 	render: function() {
-		var googleMaps = '';
-
-		if (this.props.useGoogleMaps) {
-			googleMaps = [
-				<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9PjKau31h9r6FE2LTuLTeb5WWOPy__Yg"></script>,
-				<script dangerouslySetInnerHTML={{__html: this.props.googleMapsBootstrap}}></script>
-			];
-		}
-
 		return (
 		<html>
 			<head>
@@ -25,7 +16,8 @@ module.exports = React.createClass({
 			      {'#map-canvas { width: 70%; } '}
 			      {'#list { width: 30%; position: absolute; top: 0; right: 0; overflow: auto; } '}
 			    </style>
-			    {googleMaps}
+				<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9PjKau31h9r6FE2LTuLTeb5WWOPy__Yg"></script>
+				<script dangerouslySetInnerHTML={{__html: this.props.googleMapsBootstrap}}></script>
 			</head>
 			<body>
 				<div id="app" dangerouslySetInnerHTML={{__html: this.props.markup}}></div>

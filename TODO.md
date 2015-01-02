@@ -11,3 +11,5 @@ I've got the React/Flux app bootstrapping on the client and server. Data is comi
  - Build a component test harness.
  - Build v1 of the venue map.
  - Pull in medium style guide, make a first draft of basic code layout for less. Pull in parts of bootstrap3.
+ - Flux/React in-application page navigation.
+ - Build a utility page for adding new productions and information about them (to populate production list).
