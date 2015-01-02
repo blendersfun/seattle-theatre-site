@@ -23,7 +23,20 @@ Note to self: I've established a convention of commenting the snapshot date at t
 
 ## Build Stuff, So Far:
 
-This is how to conduct a full rebuild. It is currently done by hand via the command line:
+To build:
+
+```
+gulp build
+```
+
+To build and watch for changes:
+
+```
+gulp
+```
+
+To conduct a full rebuild by hand, run the following commands:
+
 ```
 rm -R public/
 jsx -x jsx client/ public/
