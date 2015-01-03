@@ -14,8 +14,9 @@ module.exports = createStore({
     storeName: 'GoogleMapsStore',
     handlers: {
     	'GOOGLE_MAPS_READY': function () {
-    		this.state.googleMapsReady = true;
-    		this.emit('GOOGLE_MAPS_READY');
+            var store = this.dispatcher.getStore('GoogleMapsStore');
+    		store.state.googleMapsReady = true;
+    		store.emit('GOOGLE_MAPS_READY');
     	}
     },
     isGoogleMapsReady: function () {

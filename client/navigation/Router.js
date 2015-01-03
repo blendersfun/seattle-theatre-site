@@ -11,8 +11,8 @@ var router = new Router({
         method: 'get',
         serverAction: 'home/HomeActions'
     },
-    Test: {
-        path: '/test',
+    CreateProduction: {
+        path: '/create-production',
         method: 'get'
     }
 });

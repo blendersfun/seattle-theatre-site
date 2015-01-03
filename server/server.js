@@ -12,11 +12,14 @@ var Q = require('q');
 
 var Router = require('../public/navigation/Router');
 var PageRegistry = require('../public/navigation/PageRegistry');
+var NavigationStore = require('../public/navigation/NavigationStore');
 
 var BasePage = React.createFactory(require('../public/base'));
 var HomePage = React.createFactory(require('../public/pages/home/home'));
 var VenueStore = require('../public/pages/home/venueStore');
 var GoogleMapsStore = require('../public/pages/home/googleMapsStore');
+
+var CreateProductionPage = React.createFactory(require('../public/pages/admin/createProduction/createProduction'));
 
 /**
  * Create an express application.
@@ -36,37 +39,35 @@ app.use(express.static('public'));
 
 Dispatcher.registerStore(VenueStore);
 Dispatcher.registerStore(GoogleMapsStore);
+Dispatcher.registerStore(NavigationStore);
 
 /**
  * Register pages.
  */
 
 PageRegistry.registerPage('Home', HomePage);
+PageRegistry.registerPage('CreateProduction', CreateProductionPage);
 
 /**
- * Proof of concept for rendering react on the server.
+ * Middleware for handling application requests.
  */
 
 app.use(function (req, res, next) {
-
 	var route = Router.getRoute(req.url);
-	console.log('routeFound', route);	
 	if (route) {	
 			var dispatcher = new Dispatcher({});
 			var pageAction = null;
 
-			if (route.config.serverAction) {
-				console.log('serverActionFound:', route.config.serverAction);
+			dispatcher.dispatch('NAVIGATE', route);
 
+			if (route.config.serverAction) {
 				pageAction = new (require('./actions/' + route.config.serverAction))(dispatcher);
-				console.log(pageAction);
 				var pagePromise = pageAction.prepareStores();
-				console.log('pagePromise:', pagePromise);
 				pagePromise.then(
 					onFullfill.bind(null, res, dispatcher), 
 					onReject.bind(null, res));
 			} else {
-				onFullfill(dispatcher);
+				onFullfill(res, dispatcher);
 			}
 	} else {
 		next();
@@ -74,7 +75,6 @@ app.use(function (req, res, next) {
 });
 
 function onFullfill (res, dispatcher, configOverrides) {
-	console.log('onFullfill');	
 	try {
 		var stateBootstrap = 
 			'window.app = ' + serialize(dispatcher.dehydrate()) + ';';
@@ -83,7 +83,8 @@ function onFullfill (res, dispatcher, configOverrides) {
 		    'function initialize() { dispatcher.dispatch(\'GOOGLE_MAPS_READY\'); } ' +
 			'google.maps.event.addDomListener(window, \'load\', initialize);';
 
-		var renderedApp = React.renderToString(HomePage({ dispatcher: dispatcher }));
+		var Page = PageRegistry.getPage(dispatcher.getStore('NavigationStore').getCurrentPage());
+		var renderedApp = React.renderToString(Page({ dispatcher: dispatcher }));
 
 		var config = {
 			markup: renderedApp,
@@ -98,10 +99,6 @@ function onFullfill (res, dispatcher, configOverrides) {
 		}
 
 		var renderedHtml = '<!DOCTYPE html>' + React.renderToStaticMarkup(BasePage(config));
-
-
-		console.log('wtf2', renderedHtml);
-
 		res.send(renderedHtml);
 	} catch (e) {
 		onReject(e);
@@ -109,14 +106,14 @@ function onFullfill (res, dispatcher, configOverrides) {
 }
 
 function onReject (res, reason) {
-	var appConfig = {
+	var config = {
 		markup: 'Something went wrong: ' + reason,
 		state: 'window.app = null;',
 		title: 'Error!',
-		googleMapsBootstrap: null
+		useGoogleMaps: false
 	};
 
-	var renderedHtml = '<!DOCTYPE html>' + React.renderToStaticMarkup(BasePage(appConfig));
+	var renderedHtml = '<!DOCTYPE html>' + React.renderToStaticMarkup(BasePage(config));
 	res.send(renderedHtml);
 }
 
