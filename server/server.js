@@ -79,10 +79,6 @@ function onFullfill (res, dispatcher, configOverrides) {
 		var stateBootstrap = 
 			'window.app = ' + serialize(dispatcher.dehydrate()) + ';';
 
-		var googleMapsBootstrap =
-		    'function initialize() { dispatcher.dispatch(\'GOOGLE_MAPS_READY\'); } ' +
-			'google.maps.event.addDomListener(window, \'load\', initialize);';
-
 		var Page = PageRegistry.getPage(dispatcher.getStore('NavigationStore').getCurrentPage());
 		var renderedApp = React.renderToString(Page({ dispatcher: dispatcher }));
 
@@ -90,7 +86,6 @@ function onFullfill (res, dispatcher, configOverrides) {
 			markup: renderedApp,
 			state: stateBootstrap,
 			title: 'Title!',
-			googleMapsBootstrap: googleMapsBootstrap,
 			useGoogleMaps: false
 		};
 
