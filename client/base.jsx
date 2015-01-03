@@ -9,15 +9,15 @@ module.exports = React.createClass({
 	render: function() {
 
 		var googleMapsScript =
-		    'function initialize() { dispatcher.dispatch(\'GOOGLE_MAPS_READY\'); } ' +
+	    	'function initialize() { dispatcher.dispatch(\'GOOGLE_MAPS_READY\'); } ' +
 			'google.maps.event.addDomListener(window, \'load\', initialize);';
 
 		var googleMapsBootstrap = '';
 
 		if (this.props.useGoogleMaps) {
 			googleMapsBootstrap = [
-				<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9PjKau31h9r6FE2LTuLTeb5WWOPy__Yg"></script>,
-				<script dangerouslySetInnerHTML={{__html: googleMapsScript}}></script>
+				<script key="google-maps-1" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9PjKau31h9r6FE2LTuLTeb5WWOPy__Yg"></script>,
+				<script key="google-maps-2" dangerouslySetInnerHTML={{__html: googleMapsScript}}></script>
 			];
 		}
 
