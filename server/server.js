@@ -5,16 +5,21 @@
 
 var express = require('express');
 var serialize = require('serialize-javascript');
-var mysql = require('mysql');
 var React = require('react');
 var Dispatcher = require('dispatchr')();
+var extend = require('extend');
 var Q = require('q');
 
-var StaticBaseLayout = React.createFactory(require('../public/index'));
+var Router = require('../public/navigation/Router');
+var PageRegistry = require('../public/navigation/PageRegistry');
+var NavigationStore = require('../public/navigation/NavigationStore');
+
+var BasePage = React.createFactory(require('../public/base'));
 var HomePage = React.createFactory(require('../public/pages/home/home'));
 var VenueStore = require('../public/pages/home/venueStore');
 var GoogleMapsStore = require('../public/pages/home/googleMapsStore');
-var HomePageQueries = require('../public/pages/home/homeQueries.json');
+
+var CreateProductionPage = React.createFactory(require('../public/pages/admin/createProduction/createProduction'));
 
 /**
  * Create an express application.
@@ -34,80 +39,78 @@ app.use(express.static('public'));
 
 Dispatcher.registerStore(VenueStore);
 Dispatcher.registerStore(GoogleMapsStore);
+Dispatcher.registerStore(NavigationStore);
 
 /**
- * Should be moved into an action handler, but for first-draft simplicity:
+ * Register pages.
  */
 
-function retrieveVenues (dispatcher) {
-	return Q.Promise(function (resolve, reject) {
-		var connection = mysql.createConnection({
-			host: 'localhost',
-			user: 'root',
-			password: '',
-			database: 'seattle_theatre'
-		});
+PageRegistry.registerPage('Home', HomePage);
+PageRegistry.registerPage('CreateProduction', CreateProductionPage);
 
-		connection.connect();
+/**
+ * Middleware for handling application requests.
+ */
 
-		connection.query(HomePageQueries.retrieveVenues, function(err, rows) {
-			if (err) {
-				console.log('ERROR!!', err);
-				reject(err);
+app.use(function (req, res, next) {
+	var route = Router.getRoute(req.url);
+	if (route) {	
+			var dispatcher = new Dispatcher({});
+			var pageAction = null;
+
+			dispatcher.dispatch('NAVIGATE', route);
+
+			if (route.config.serverAction) {
+				pageAction = new (require('./actions/' + route.config.serverAction))(dispatcher);
+				var pagePromise = pageAction.prepareStores();
+				pagePromise.then(
+					onFullfill.bind(null, res, dispatcher), 
+					onReject.bind(null, res));
+			} else {
+				onFullfill(res, dispatcher);
 			}
-
-			dispatcher.dispatch('VENUES_RETRIEVED', rows);
-			resolve();
-		});
-
-		connection.end();
-	});
-};
-
-/**
- * Proof of concept for rendering react on the server.
- */
-
-app.get('/', function (req, res) {
-	var dispatcher = new Dispatcher({});
-	retrieveVenues(dispatcher).then(onFullfill, onReject);
-
-	function onFullfill () {
-		try {
-			var renderedApp = React.renderToString(HomePage({ dispatcher: dispatcher }));
-
-			var stateBootstrap = 
-				'window.app = ' + serialize(dispatcher.dehydrate()) + ';';
-
-			var googleMapsBootstrap =
-			    'function initialize() { dispatcher.dispatch(\'GOOGLE_MAPS_READY\'); } ' +
-				'google.maps.event.addDomListener(window, \'load\', initialize);'
-
-			var renderedHtml = '<!DOCTYPE html>' + 
-				React.renderToStaticMarkup(StaticBaseLayout({
-					markup: renderedApp,
-					state: stateBootstrap,
-					title: 'Title!',
-					googleMapsBootstrap: googleMapsBootstrap
-				}));
-			res.send(renderedHtml);
-		} catch (e) {
-			onReject(e);
-		}
+	} else {
+		next();
 	}
-
-	function onReject (reason) {
-		var renderedHtml = '<!DOCTYPE html>' + 
-			React.renderToStaticMarkup(StaticBaseLayout({
-				markup: 'Something went wrong: ' + reason,
-				state: 'window.app = null;',
-				title: 'Error!',
-				googleMapsBootstrap: ''
-			}));
-		res.send(renderedHtml);
-	}
-
 });
+
+function onFullfill (res, dispatcher, configOverrides) {
+	try {
+		var stateBootstrap = 
+			'window.app = ' + serialize(dispatcher.dehydrate()) + ';';
+
+		var Page = PageRegistry.getPage(dispatcher.getStore('NavigationStore').getCurrentPage());
+		var renderedApp = React.renderToString(Page({ dispatcher: dispatcher }));
+
+		var config = {
+			markup: renderedApp,
+			state: stateBootstrap,
+			title: 'Title!',
+			useGoogleMaps: false
+		};
+
+		if (configOverrides) {
+			extend(false, config, configOverrides);
+		}
+
+		var renderedHtml = '<!DOCTYPE html>' + React.renderToStaticMarkup(BasePage(config));
+		res.send(renderedHtml);
+	} catch (e) {
+		onReject(e);
+	}
+}
+
+function onReject (res, reason) {
+	var config = {
+		markup: 'Something went wrong: ' + reason,
+		state: 'window.app = null;',
+		title: 'Error!',
+		useGoogleMaps: false
+	};
+
+	var renderedHtml = '<!DOCTYPE html>' + React.renderToStaticMarkup(BasePage(config));
+	res.send(renderedHtml);
+}
 
 /**
  * Run the express application.
