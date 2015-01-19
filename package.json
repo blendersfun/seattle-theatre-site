@@ -8,8 +8,9 @@
     "type": "git",
     "url": "https://github.com/blendersfun/seattle-theatre-site.git"
   },
-  "main": "server/server.js",
+  "main": "dist/private/server/server.js",
   "dependencies": {
+    "express": "^4.11.0",
     "react": "^0.12.2"
   },
   "devDependencies": {

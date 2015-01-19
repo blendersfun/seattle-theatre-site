@@ -1,2 +1,6 @@
 
-var home = require('./home');
+/**
+ * Dependencies.
+ */
+
+var React = require('react');
