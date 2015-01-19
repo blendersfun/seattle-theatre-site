@@ -21,6 +21,7 @@ var paths = {
   serverJs: ['src/server/**/*.js'],
   jsx: ['src/app/**/*.jsx'],
   queries: ['src/server/**/*-queries.yaml'],
+  bundle: 'src/app/client.js',
 
   // dist
   distPrivateServer: 'dist/private/server',
@@ -59,14 +60,14 @@ gulp.task('copy-app-js', function() {
 
 gulp.task('copy-js', ['copy-app-js','copy-server-js']);
 
-gulp.task('convert-jsx', function() {
+gulp.task('transform-jsx', function() {
   return gulp.src(paths.jsx)
     .pipe(react())
     .pipe(gulp.dest(paths.distPrivateApp));
 });
 
 gulp.task('browserify', function() {
-  return gulp.src('src/app/client.js')
+  return gulp.src(paths.bundle)
     .pipe(browserify({
         extensions: ['.jsx'],
         transform: reactify
@@ -74,7 +75,7 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest(paths.distPublic));
 });
 
-gulp.task('build', ['build-queries', 'copy-js', 'convert-jsx', 'browserify']);
+gulp.task('build', ['build-queries', 'copy-js', 'transform-jsx', 'browserify']);
 
 /**
  * Watch task.

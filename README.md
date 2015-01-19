@@ -25,7 +25,6 @@ Note to self: I've established a convention of commenting the snapshot date at t
 First, install gulp and react-tools as global dependencies:
 
     npm install -g gulp
-    npm install -g react-tools
 
 Then install all local dependencies:
 
@@ -38,7 +37,3 @@ To build:
 To build and watch for changes:
 
     gulp
-
-Browserify must be done after jsx conversion. No modules require in jsx files. Instead, jsx is built into js and modules require the built copies. So, if the built copies don't exist yet, browserify will fail.
-
-This process depends on global installs of the following: react-tools, gulp.
