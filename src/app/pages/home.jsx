@@ -4,7 +4,7 @@
  */
 
 var React = require('react');
-var navigateAction = require('../nav/navigate-action');
+var NavLink = require('../nav/nav-link');
 
 /**
  * Home page.
@@ -13,10 +13,7 @@ var navigateAction = require('../nav/navigate-action');
 module.exports = React.createClass({
   render: function() {
     return (
-      <div>I am home. <button onClick={this.handle}>Go</button></div>
+      <div>I am home. <NavLink context={this.props.context} href="/testPage" text="Test"/></div>
     );
-  },
-  handle: function () {
-    this.props.context.executeAction(navigateAction, { url: '/testPage' });
   }
 });

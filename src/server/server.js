@@ -30,7 +30,9 @@ expressApp.use(express.static('dist/public'));
 expressApp.use(function (req, res, next) {
   var context = fluxApp.createContext();
   context.executeAction(navigateAction, { url: req.url }, function (result) {
-    if (result.matchedRoute) {
+    if (result && result.failed) {
+      next();
+    } else {
       var appConfig = {
         context: context.getComponentContext()
       };
@@ -46,8 +48,6 @@ expressApp.use(function (req, res, next) {
         React.renderToStaticMarkup(basePage(docConfig));
 
       res.send(renderedHtml);
-    } else {
-      next();
     }
   });
 });

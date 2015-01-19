@@ -7,8 +7,8 @@ module.exports = function (actionContext, payload, done) {
   var route = actionContext.router.getRoute(payload.url);
   if (route) {
     actionContext.dispatch('navigate', route);
-    done({ matchedRoute: route });
+    done();
   } else {
-    done({});
+    done({ failed: true });
   }
 };

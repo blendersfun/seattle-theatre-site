@@ -18,6 +18,12 @@ module.exports = React.createClass({
   statics: {
     storeListeners: [NavigateStore]
   },
+  componentDidMount: function () {
+    window.onpopstate = this.navigate;
+  },
+  componentWillUnmount: function () {
+    window.onpopstate = null;
+  },
   getInitialState: function () {
     var navStore = this.props.context.getStore('navigate');
 
@@ -38,5 +44,8 @@ module.exports = React.createClass({
     this.setState({
       currentPage: navStore.getCurrentPage()
     });
+  },
+  navigate: function () {
+    this.props.context.executeAction(navigateAction, { url: location.pathname });
   }
 });
