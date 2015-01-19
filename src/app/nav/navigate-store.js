@@ -9,7 +9,7 @@ var createStore = require('../core/create-store');
  * A store to contain what page we are currently on.
  */
 
-var NavigateStore = createStore({
+module.exports = createStore({
   initialize: function () {
     this.state = {
       currentPage: null
@@ -26,5 +26,3 @@ var NavigateStore = createStore({
     return this.state.currentPage;
   }
 });
-
-module.exports = NavigateStore;
