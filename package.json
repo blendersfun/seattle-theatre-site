@@ -11,6 +11,7 @@
   "main": "dist/private/server/server.js",
   "dependencies": {
     "express": "^4.11.0",
+    "extend": "^2.0.0",
     "fluxible": "^0.1.5",
     "fluxible-plugin-routr": "^0.3.0",
     "react": "^0.12.2",
