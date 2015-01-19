@@ -1,61 +1,92 @@
-var browserify = require('gulp-browserify');
-var clean = require('gulp-clean');
+
+/**
+ * Dependencies.
+ */
+
 var gulp = require('gulp');
-var jsx = require('gulp-jsx');
+var del = require('del');
+var react = require('gulp-react');
+var browserify = require('gulp-browserify');
 var reactify = require('reactify');
-var run = require('gulp-run');
-var runSequence = require('run-sequence');
-var shell = require('gulp-shell');
 var yaml = require('gulp-yaml');
 
+/**
+ * Build Paths.
+ */
+
 var paths = {
-  js: ['client/**/*.js'],
-  jsx: ['client/**/*.jsx'],
-  queries: ['client/**/*.yaml']
+
+  // src
+  appJs: ['src/app/**/*.js'],
+  serverJs: ['src/server/**/*.js'],
+  jsx: ['src/app/**/*.jsx'],
+  queries: ['src/server/**/*-queries.yaml'],
+
+  // dist
+  distPrivateServer: 'dist/private/server',
+  distPrivateApp: 'dist/private/app',
+  distPublic: 'dist/public'
+
 };
 
-// Remove built files.
-gulp.task('clean', function(callback) {
-  return gulp.src('public/**/*')
-    .pipe(clean());
+/**
+ * Clean task.
+ */
+
+gulp.task('clean', function (cb) {
+  del(['dist'], cb);
 });
 
-// Top-level build task.
-gulp.task('build', function(callback) {
-    runSequence(['copy-js', 'build-jsx', 'build-queries'], 'browserify', callback);
-});
+/**
+ * Build task.
+ */
 
-// Convert the yaml to json.
 gulp.task('build-queries', function() {
   return gulp.src(paths.queries)
     .pipe(yaml())
-    .pipe(gulp.dest('public'));
+    .pipe(gulp.dest(paths.distPrivateServer));
 });
 
-// Copy the js files.
-gulp.task('copy-js', function() {
-  return gulp.src(paths.js)
-    .pipe(gulp.dest('public'));
+gulp.task('copy-server-js', function() {
+  return gulp.src(paths.serverJs)
+    .pipe(gulp.dest(paths.distPrivateServer));
 });
 
-// Build the jsx files.
-gulp.task('build-jsx', shell.task([
-    'jsx -x jsx client/ public/'
-]));
+gulp.task('copy-app-js', function() {
+  return gulp.src(paths.appJs)
+    .pipe(gulp.dest(paths.distPrivateApp));
+});
+
+gulp.task('copy-js', ['copy-app-js','copy-server-js']);
+
+gulp.task('convert-jsx', function() {
+  return gulp.src(paths.jsx)
+    .pipe(react())
+    .pipe(gulp.dest(paths.distPrivateApp));
+});
 
 gulp.task('browserify', function() {
-  return gulp.src('client/client.js')
+  return gulp.src('src/app/client.js')
     .pipe(browserify({
+        extensions: ['.jsx'],
         transform: reactify
     }))
-    .pipe(gulp.dest('public'));
+    .pipe(gulp.dest(paths.distPublic));
 });
 
-// Rerun the task when a file changes.
+gulp.task('build', ['build-queries', 'copy-js', 'convert-jsx', 'browserify']);
+
+/**
+ * Watch task.
+ */
+
 gulp.task('watch', function() {
-  var allFiles = [paths.js, paths.jsx, paths.queries];
+  var allFiles = [paths.appJs, paths.serverJs, paths.jsx, paths.queries];
   gulp.watch(allFiles, ['build']);
 });
 
-// The default task (called when you run `gulp` from cli).
+/**
+ * Default task.
+ */
+
 gulp.task('default', ['watch', 'build']);

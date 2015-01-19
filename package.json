@@ -9,6 +9,15 @@
     "url": "https://github.com/blendersfun/seattle-theatre-site.git"
   },
   "main": "server/server.js",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "react": "^0.12.2"
+  },
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.10",
+    "gulp-browserify": "^0.5.1",
+    "gulp-react": "^2.0.0",
+    "gulp-yaml": "^0.2.3",
+    "reactify": "^0.17.1"
+  }
 }
