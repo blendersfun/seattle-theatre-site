@@ -11,7 +11,9 @@
   "main": "dist/private/server/server.js",
   "dependencies": {
     "express": "^4.11.0",
-    "react": "^0.12.2"
+    "fluxible": "^0.1.5",
+    "react": "^0.12.2",
+    "serialize-javascript": "^1.0.0"
   },
   "devDependencies": {
     "del": "^1.1.1",
