@@ -16,11 +16,7 @@ module.exports = React.createClass({
       <html>
         <head>
           <title>{this.props.title}</title>
-          <style type="text/css">
-            {'html, body, #app, #app-component, #home-page, #list, #map-canvas { height: 100%; margin: 0; padding: 0; overflow: hidden; } '}
-            {'#map-canvas { width: 70%; } '}
-            {'#list { width: 30%; position: absolute; top: 0; right: 0; overflow: auto; } '}
-          </style>
+          <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{__html: this.props.markup}}></div>
