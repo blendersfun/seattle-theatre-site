@@ -9,6 +9,7 @@ var serializeJavascript = require('serialize-javascript');
 
 var fluxApp = require('../app/app');
 var basePage = React.createFactory(require('../app/base'));
+var navigateAction = require('../app/nav/navigate-action');
 
 /**
  * Create an express application.
@@ -28,22 +29,27 @@ expressApp.use(express.static('dist/public'));
 
 expressApp.use(function (req, res, next) {
   var context = fluxApp.createContext();
+  context.executeAction(navigateAction, { url: req.url }, function (result) {
+    if (result.matchedRoute) {
+      var appConfig = {
+        context: context.getComponentContext()
+      };
+      var renderedApp = React.renderToString(fluxApp.getAppComponent()(appConfig));
+      var appState = 'window.appState = ' + serializeJavascript(fluxApp.dehydrate(context)) + ';';
 
-  var appConfig = {
-    context: context.getComponentContext()
-  };
-  var renderedApp = React.renderToString(fluxApp.getAppComponent()(appConfig));
-  var appState = 'window.appState = ' + serializeJavascript(fluxApp.dehydrate(context)) + ';';
+      var docConfig = {
+        title: 'Title',
+        markup: renderedApp,
+        state: 'window.state = ' + appState + ';'
+      };
+      var renderedHtml = '<!DOCTYPE html>' + 
+        React.renderToStaticMarkup(basePage(docConfig));
 
-  var docConfig = {
-    title: 'Title',
-    markup: renderedApp,
-    state: 'window.state = ' + appState + ';'
-  };
-  var renderedHtml = '<!DOCTYPE html>' + 
-    React.renderToStaticMarkup(basePage(docConfig));
-
-  res.send(renderedHtml);
+      res.send(renderedHtml);
+    } else {
+      next();
+    }
+  });
 });
 
 /**

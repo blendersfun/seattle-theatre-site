@@ -37,3 +37,9 @@ To build:
 To build and watch for changes:
 
     gulp
+
+## Running the Server
+
+From the root folder of the repository:
+
+    node dist/private/server/server.js
