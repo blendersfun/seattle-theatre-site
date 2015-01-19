@@ -18,11 +18,11 @@ module.exports = createStore({
   storeName: 'google-maps',
   handlers: {
     googleMapsReady: function () {
-      this.state.googleMapsReady = true;
+      this.state.ready = true;
       this.emitChange();
     }
   },
-  isGoogleMapsReady: function () {
-    return this.state.googleMapsReady;
+  isReady: function () {
+    return this.state.ready;
   }
 });

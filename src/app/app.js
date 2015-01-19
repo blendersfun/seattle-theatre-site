@@ -29,6 +29,7 @@ app.plug(routrPlugin({
  */
 
 app.registerStore(require('./nav/navigate-store'));
+app.registerStore(require('./maps/google-maps-store'));
 app.registerStore(require('./pages/home/venue-store'));
 
 /**
