@@ -18,6 +18,6 @@ app.rehydrate(window.appState, function (err, context) {
   var appConfig = {
     context: context.getComponentContext()
   };
-  var mountNode = document.getElementById('app');
+  var mountNode = document.body;
   React.render(app.getAppComponent()(appConfig), mountNode);
 });
