@@ -33,24 +33,36 @@ expressApp.use(function (req, res, next) {
     if (result && result.failed) {
       next();
     } else {
-      var appConfig = {
-        context: context.getComponentContext()
-      };
-      var renderedApp = React.renderToString(fluxApp.getAppComponent()(appConfig));
-      var appState = 'window.appState = ' + serializeJavascript(fluxApp.dehydrate(context)) + ';';
-
-      var docConfig = {
-        title: 'Title',
-        markup: renderedApp,
-        state: 'window.state = ' + appState + ';'
-      };
-      var renderedHtml = '<!DOCTYPE html>' + 
-        React.renderToStaticMarkup(basePage(docConfig));
-
-      res.send(renderedHtml);
+      var route = context.getActionContext().router.getRoute(req.url);
+      if (route.config.actionPath) {
+        var pageActions = require('./actions/' + route.config.actionPath);
+        context.executeAction(pageActions.loadPage, { route: route }, function () {
+          renderApp(context, req, res);
+        });
+      } else {
+        renderApp(context, req, res);
+      }
     }
   });
 });
+
+function renderApp(context, req, res) {
+  var appConfig = {
+    context: context.getComponentContext()
+  };
+  var renderedApp = React.renderToString(fluxApp.getAppComponent()(appConfig));
+  var appState = 'window.appState = ' + serializeJavascript(fluxApp.dehydrate(context)) + ';';
+
+  var docConfig = {
+    title: 'Title',
+    markup: renderedApp,
+    state: 'window.state = ' + appState + ';'
+  };
+  var renderedHtml = '<!DOCTYPE html>' + 
+    React.renderToStaticMarkup(basePage(docConfig));
+
+  res.send(renderedHtml);
+}
 
 /**
  * Run the express application.

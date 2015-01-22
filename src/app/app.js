@@ -29,12 +29,14 @@ app.plug(routrPlugin({
  */
 
 app.registerStore(require('./nav/navigate-store'));
+app.registerStore(require('./maps/google-maps-store'));
+app.registerStore(require('./pages/home/venue-store'));
 
 /**
  * Register pages.
  */
 
-pageRegistry.registerPage('home', React.createFactory(require('./pages/home')));
+pageRegistry.registerPage('home', React.createFactory(require('./pages/home/home')));
 pageRegistry.registerPage('testPage', React.createFactory(require('./pages/test')));
 
 /**

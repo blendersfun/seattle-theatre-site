@@ -16,6 +16,7 @@ module.exports = React.createClass({
       <html>
         <head>
           <title>{this.props.title}</title>
+          <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{__html: this.props.markup}}></div>

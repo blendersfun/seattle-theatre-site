@@ -3,13 +3,13 @@
  * Dependencies.
  */
 
-var createStore = require('fluxible/utils/createStore');
+var createStore = require('../core/create-store');
 
 /**
  * A store to contain what page we are currently on.
  */
 
-var NavigateStore = createStore({
+module.exports = createStore({
   initialize: function () {
     this.state = {
       currentPage: null
@@ -24,13 +24,5 @@ var NavigateStore = createStore({
   },
   getCurrentPage: function () {
     return this.state.currentPage;
-  },
-  dehydrate: function () {
-    return this.state;
-  },
-  rehydrate: function (state) {
-    this.state = state;
   }
 });
-
-module.exports = NavigateStore;
