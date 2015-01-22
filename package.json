@@ -8,9 +8,18 @@
     "type": "git",
     "url": "https://github.com/blendersfun/seattle-theatre-site.git"
   },
-  "main": "server/server.js",
+  "main": "dist/private/server/server.js",
   "dependencies": {
-    "react": "^0.12.2"
+    "bootstrap": "^3.3.1",
+    "express": "^4.11.0",
+    "extend": "^2.0.0",
+    "fluxible": "^0.1.5",
+    "fluxible-plugin-routr": "^0.3.0",
+    "gulp-less": "^2.0.1",
+    "mysql": "^2.5.4",
+    "react": "^0.12.2",
+    "serialize-javascript": "^1.0.0",
+    "stream-combiner2": "^1.0.2"
   },
   "devDependencies": {
     "del": "^1.1.1",
