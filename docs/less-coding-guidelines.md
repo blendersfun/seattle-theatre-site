@@ -72,7 +72,7 @@ Utilities must use a camel case name, prefixed with a `u` namespace. What follow
     <img class="u-block" src="{$src}" alt="">
   </a>
   <p class="u-sizeFill u-textBreak">
-    â€¦
+    …
   </p>
 </div>
 ```
@@ -97,12 +97,12 @@ You can think of components as custom elements that enclose specific semantics, 
 The component's name must be written in camel case.
 
 ```css
-.myComponent { /* â€¦ */ }
+.myComponent { /* … */ }
 ```
 
 ```html
 <article class="myComponent">
-  â€¦
+  …
 </article>
 ```
 
@@ -113,13 +113,13 @@ A component modifier is a class that modifies the presentation of the base compo
 
 ```css
 /* Core button */
-.btn { /* â€¦ */ }
+.btn { /* … */ }
 /* Default button style */
-.btn--default { /* â€¦ */ }
+.btn--default { /* … */ }
 ```
 
 ```html
-<button class="btn btn--primary">â€¦</button>
+<button class="btn btn--primary">…</button>
 ```
 <a name="componentName-descendantName"></a>
 ### componentName-descendantName
@@ -130,10 +130,10 @@ A component descendant is a class that is attached to a descendant node of a com
 <article class="tweet">
   <header class="tweet-header">
     <img class="tweet-avatar" src="{$src}" alt="{$alt}">
-    â€¦
+    …
   </header>
   <div class="tweet-body">
-    â€¦
+    …
   </div>
 </article>
 ```
@@ -146,13 +146,13 @@ Use `is-stateName` for state-based modifications of components. The state name m
 JS can add/remove these classes. This means that the same state names can be used in multiple contexts, but every component must define its own styles for the state (as they are scoped to the component).
 
 ```css
-.tweet { /* â€¦ */ }
-.tweet.is-expanded { /* â€¦ */ }
+.tweet { /* … */ }
+.tweet.is-expanded { /* … */ }
 ```
 
 ```html
 <article class="tweet is-expanded">
-  â€¦
+  …
 </article>
 ```
 
@@ -310,14 +310,14 @@ CSS rules should be comma seperated but live on new lines:
 ```css
 .content,
 .content-edit {
-  â€¦
+  …
 }
 ```
 
 **Wrong:**
 ```css
 .content, .content-edit {
-  â€¦
+  …
 }
 ```
 
@@ -326,21 +326,21 @@ CSS blocks should be seperated by a single new line. not two. not 0.
 **Right:**
 ```css
 .content {
-  â€¦
+  …
 }
 .content-edit {
-  â€¦
+  …
 }
 ```
 
 **Wrong:**
 ```css
 .content {
-  â€¦
+  …
 }
 
 .content-edit {
-  â€¦
+  …
 }
 ```
 
