@@ -1,4 +1,4 @@
-retrieveVenues: >
+readVenues: >
     SELECT a.*, v.id venue_id, v.name venue_name, ps.id space_id, ps.name space_name
     FROM performance_space ps, venue v, address a
     WHERE ps.venue_id = v.id

@@ -6,8 +6,10 @@
 var React = require('react');
 var StoreMixin = require('fluxible').StoreMixin;
 var GoogleMapsStore = require('../../maps/google-maps-store');
+var VenueStore = require('./venue-store');
 var NavLink = require('../../nav/nav-link');
 var loadGoogleMapsAction = require('../../maps/load-google-maps-action');
+var homePageActions = require('./home-page-actions');
 
 /**
  * Home page.
@@ -16,7 +18,8 @@ var loadGoogleMapsAction = require('../../maps/load-google-maps-action');
 module.exports = React.createClass({
   mixins: [StoreMixin],
   statics: {
-    storeListeners: [GoogleMapsStore]
+    storeListeners: [GoogleMapsStore, VenueStore],
+    initializeAction: homePageActions.initializePage
   },
   getInitialState: function () {
     var venues = this.props.context.getStore('venue').getVenues();
@@ -65,9 +68,18 @@ module.exports = React.createClass({
   },
   onChange: function () {
     var mapsIsReady = this.props.context.getStore('google-maps').isReady();
+    var venues = this.props.context.getStore('venue').getVenues();
+
     if (mapsIsReady) {
-      this.renderMap();
+      if (!this.map) {
+        this.renderMap();
+      } else {
+        this.updatePins();
+      }
     }
+    this.setState({
+      venues: venues
+    });
   },
   renderMap: function () {
     var mapOptions = {

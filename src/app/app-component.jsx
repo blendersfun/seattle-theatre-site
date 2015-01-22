@@ -35,7 +35,7 @@ module.exports = React.createClass({
     var Page = pageRegistry.getPage(this.state.currentPage);
 
     return (
-      <div id="app-component">{Page({ context: this.props.context })}</div>
+      <div id="app-component">{React.createElement(Page,{ context: this.props.context })}</div>
     );
   },
   onChange: function () {

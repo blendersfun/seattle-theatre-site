@@ -1,11 +1,10 @@
 module.exports = {
   home: {
     path: '/',
-    method: 'get',
-    actionPath: 'home-actions'
+    method: 'get'
   },
   testPage: {
-    path: '/testPage',
+    path: '/test-page',
     method: 'get'
   }
 };
