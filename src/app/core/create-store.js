@@ -24,6 +24,6 @@ var genericHydration = {
  */
 
 module.exports = function (storeSpec) {
-  extend(false, storeSpec, genericHydration);
+  extend(storeSpec, genericHydration);
   return createStore(storeSpec);
 };

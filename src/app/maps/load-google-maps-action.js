@@ -3,10 +3,11 @@
  * Asynchronously load the google maps api.
  */
 
-module.exports = function (context) {
+function loadGoogleMapsAction(actionContext, payload, done) {
   window.initialize = function () {
-    context.executeAction(googleMapsAction);
+    actionContext.dispatch('googleMapsReady');
     window.initialize = null;
+    done();
   };
 
   var script = document.createElement('script');
@@ -16,6 +17,4 @@ module.exports = function (context) {
   document.body.appendChild(script);
 };
 
-function googleMapsAction (actionContext, payload, done) {
-  actionContext.dispatch('googleMapsReady');
-}
+module.exports = loadGoogleMapsAction;

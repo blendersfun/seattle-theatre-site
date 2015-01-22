@@ -51,12 +51,12 @@ function renderApp(context, req, res) {
     context: context.getComponentContext()
   };
   var renderedApp = React.renderToString(fluxApp.getAppComponent()(appConfig));
-  var appState = 'window.appState = ' + serializeJavascript(fluxApp.dehydrate(context)) + ';';
+  var appState = serializeJavascript(fluxApp.dehydrate(context));
 
   var docConfig = {
     title: 'Title',
     markup: renderedApp,
-    state: 'window.state = ' + appState + ';'
+    state: 'window.appState = ' + appState + ';'
   };
   var renderedHtml = '<!DOCTYPE html>' + 
     React.renderToStaticMarkup(basePage(docConfig));

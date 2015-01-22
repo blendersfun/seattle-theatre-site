@@ -7,7 +7,7 @@ var React = require('react');
 var StoreMixin = require('fluxible').StoreMixin;
 var GoogleMapsStore = require('../../maps/google-maps-store');
 var NavLink = require('../../nav/nav-link');
-var loadGoogleMaps = require('../../maps/load-google-maps');
+var loadGoogleMapsAction = require('../../maps/load-google-maps-action');
 
 /**
  * Home page.
@@ -30,7 +30,7 @@ module.exports = React.createClass({
     if (mapsIsReady) {
       this.renderMap();
     } else {
-      loadGoogleMaps(this.props.context);
+      this.props.context.executeAction(loadGoogleMapsAction);
     }
   },
   render: function() {
