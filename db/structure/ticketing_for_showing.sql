@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS `ticketing_for_showing` (
 
 ALTER TABLE `ticketing_for_showing`
   ADD CONSTRAINT `showing_for_ticketing_fkey` FOREIGN KEY (`ticketing_scheme_id`) REFERENCES `ticket_scheme` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ticketing_for_showing_fkey` FOREIGN KEY (`showing_id`) REFERENCES `scheduled_show` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `ticketing_for_showing_fkey` FOREIGN KEY (`showing_id`) REFERENCES `scheduled_showing` (`id`) ON DELETE CASCADE;

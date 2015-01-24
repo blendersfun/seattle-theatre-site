@@ -1,12 +1,24 @@
--- Snapshot taken: 14:39:00 01-01-2014
+-- Snapshot taken: 16:26:00 01-20-2014
+
+-- phpMyAdmin SQL Dump
+-- version 4.0.9
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jan 21, 2015 at 01:30 AM
+-- Server version: 5.5.34
+-- PHP Version: 5.4.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+--
+-- Database: `seattle_theatre`
+--
+
+--
+-- Dumping data for table `address`
+--
 
 INSERT INTO `address` (`id`, `line1`, `line2`, `city`, `state`, `zip`, `lat`, `lng`) VALUES
 (1, '700 Union Street', '', 'Seattle', 'WA', '98101', 47.611038, -122.332397),
@@ -35,18 +47,18 @@ INSERT INTO `address` (`id`, `line1`, `line2`, `city`, `state`, `zip`, `lat`, `l
 (24, '2125 3rd Ave', '', 'Seattle', 'WA', '98121', 47.613674, -122.343323),
 (25, '1428 Post Alley', '', 'Seattle', 'WA', '98101', 47.608421, -122.339928);
 
-INSERT INTO `collaborator_role` (`id`, `title`, `description`) VALUES
-(1, 'stage manager', NULL),
-(2, 'assistant stage manager', NULL),
-(3, 'director', NULL),
-(4, 'scenic designer', NULL),
-(5, 'lighting designer', NULL),
-(6, 'costume designer', NULL),
-(7, 'sound designer', NULL),
-(8, 'dramaturg', NULL),
-(9, 'dance choreographer', NULL),
-(10, 'dialect coach', NULL),
-(11, 'actor', NULL);
+--
+-- Dumping data for table `collaborator_role_type`
+--
+
+INSERT INTO `collaborator_role_type` (`id`, `name`, `description`) VALUES
+(1, 'collaborator', 'No special distinctions are applied to this role type.'),
+(2, 'creator', 'A role with this distinction is considered to have authorship over the piece they are collaborating on.'),
+(3, 'writer', 'A role with this distinction is considered to have authorship over the script that is being used.');
+
+--
+-- Dumping data for table `person`
+--
 
 INSERT INTO `person` (`id`, `first_name`, `middle_name`, `last_name`, `gender`, `in_actors_equity`) VALUES
 (1, 'Jane', NULL, 'Austen', 'F', NULL),
@@ -75,6 +87,10 @@ INSERT INTO `person` (`id`, `first_name`, `middle_name`, `last_name`, `gender`, 
 (24, 'Anthea', NULL, 'Carns', 'F', NULL),
 (25, 'Laura', NULL, 'Ferri', 'F', NULL),
 (26, 'Gin', NULL, 'Hammond', 'F', NULL);
+
+--
+-- Dumping data for table `producing_org`
+--
 
 INSERT INTO `producing_org` (`id`, `name`, `mission_statement`, `founding_year`) VALUES
 (1, 'A Contemporary Theatre', 'We exist for the same reason that there is public education and public health - to support and raise the quality of life in our civilization.\r\n\r\nWe believe in the theatre of the moment, this moment, the present, contemporary struggles, issues, ideas, being. If this practice creates light, consciousness, deeper thought, more fellow feeling, both in our audiences and in ourselves, we believe this to be good for something.\r\n\r\nACT seeks to create a conversation with its work, its season, that reaches for something broader, deeper, seeking to create a philosophical view, or a more connected sense of compassion with our fellow beings and the world at large...An investigation, a sense of experiment, of searching for the new idea or synthesis.\r\n\r\nThe primacy of product - the beautifully fashioned thing, the definitive performance, the astonishing act. We strive for insane excellence. Otherwise, everything is dismissible.\r\n\r\nACT is a reef - A vertical ecosystem of artistic practice. Its job is to create levels of experience through the medium of performance. Its building, its series of performance spaces and intriguing rooms reflect this potential and cry out for its use in this way. The present is multifarious, contradictory, high and low culture, has many guises, ethnicities, and voices. The theatre must reflect this diversity---aesthetically, socially, ethnically, and intellectually.\r\n\r\nA reef is a home - A community of mutually sustaining life forms. ACT should be a mutually sustaining community of theatre practices and audiences. It also exists to stimulate and please its audiences, and to sustain its community of theatre workers and artists. Nothing significant can be made without this community, this family. The artist cannot be forgotten.\r\n\r\nAll forms of theatre represent possibilities for new insight, new experience, new life. Hence, all performance practices and disciplines are fair game. Conventional theatre, performance art, musicals, dance, site-specific pieces, poetry, cabaret, Comedy, and a broad range of theatrical experimentations live side by side.\r\n\r\nNew art. If the theatre doesn''t press the envelope, it fails its ambition to lead the pack by creating new experience. Risk is essential. Few have ever made anything good without it. All plays can be looked at as simulations of risk for the audience, allowing patrons to experience risk in a risk-less environment. It is the business of theatre to create them and take them.\r\n\r\nThe dimension of poetry, High Art. If the theatre has no supersensual utility, it is nothing. If it cannot lead its patrons to another plane of experience-metaphorical, abstract, or deeply affective-it remains earthbound and less than pop media. It has no reason to exist. If it does not reflect the complexities of the world, it is false.\r\n\r\nPopulist art must be part of the overall complexion of the theatre. If it only becomes a palace for High Art, it loses connection with the universal yearning for the redemptive story and the belly laugh.\r\n\r\nACT exists for the community and to strengthen it, for all searchers of all ethnicities and ages. We continually develop deep connections with other likeminded institutions. We produce mutually, interweave and sustain communities of audiences from the socio-politically driven to the sybarites, from the connoisseurs and intellectuals to the fun seekers.', NULL),
@@ -109,11 +125,30 @@ INSERT INTO `producing_org` (`id`, `name`, `mission_statement`, `founding_year`)
 (30, 'Theater Schmeater', 'Since its inception in 1992, Theater Schmeater''s mission has been to produce great plays simply and foster a love of theater as an art form in future audiences.', NULL),
 (31, 'Unexpected Productions', 'Unexpected Productions is heart of improv in Seattle, and has been performing comedy improv in Seattle since 1983, and is dedicated to promoting the art and spirit of improvisation.', NULL);
 
-INSERT INTO `script` (`id`, `name`, `synopsis`, `publish_date`, `premiere_date`, `is_conventional`) VALUES
-(1, 'Pride and Prejudice, Book-It''s Adaptation', 'The story is based on Jane Austen''s novel about five sisters - Jane, Elizabeth, Mary, Kitty and Lydia Bennet - in Georgian England. Their lives are turned upside down when a wealthy young man (Mr. Bingley) and his best friend (Mr. Darcy) arrive in their neighborhood.\n\n- Marcy Gomez\n\n(source: http://www.imdb.com/title/tt0414387/plotsummary)', NULL, NULL, 1);
+--
+-- Dumping data for table `script`
+--
+
+INSERT INTO `script` (`id`, `name`, `synopsis`, `publish_date`, `premiere_date`) VALUES
+(1, 'Pride and Prejudice, Book-It''s Adaptation', 'The story is based on Jane Austen''s novel about five sisters - Jane, Elizabeth, Mary, Kitty and Lydia Bennet - in Georgian England. Their lives are turned upside down when a wealthy young man (Mr. Bingley) and his best friend (Mr. Darcy) arrive in their neighborhood.\n\n- Marcy Gomez\n\n(source: http://www.imdb.com/title/tt0414387/plotsummary)', NULL, NULL);
+
+--
+-- Dumping data for table `season`
+--
 
 INSERT INTO `season` (`id`, `name`, `flavor_text`, `producer_id`) VALUES
 (1, 'Silver Jubilee Season (2014-2015)', 'Twenty-five years of growing a theatre company is a BIG deal. Book-It Repertory Theatre is thrilled to announce (something we never dreamed of in 1990) our 25th season! The first two productions come from our repertory of more than 100 adaptations; the final three are world-premiere works. All five mainstage shows will be produced at the Center Theatre in the Armory.', 3);
+
+--
+-- Dumping data for table `staging`
+--
+
+INSERT INTO `staging` (`id`, `name`, `staging_notes`) VALUES
+(1, 'Pride and Prejudice', 'Our first foray into adapting the novels of Miss Jane Austen, P&P is replete with the author’s charm, wit, and keen observations. Her comedy of manners and courtship boasts a cast of beloved and unforgettable characters led by the extraordinary Elizabeth Bennet and the dashing Mister Darcy. Book-It is delighted to once again stage the classic favorite for new and returning audiences this holiday season.');
+
+--
+-- Dumping data for table `ticket_price`
+--
 
 INSERT INTO `ticket_price` (`id`, `name`, `amount`, `qualifying_conditions`, `is_special_case`) VALUES
 (1, 'Standard Price', 5500, NULL, 0),
@@ -126,8 +161,16 @@ INSERT INTO `ticket_price` (`id`, `name`, `amount`, `qualifying_conditions`, `is
 (8, 'Opening Night', 6000, NULL, 0),
 (9, 'Preview', 3500, NULL, 0);
 
+--
+-- Dumping data for table `ticket_type`
+--
+
 INSERT INTO `ticket_type` (`id`, `name`, `benefits_granted`) VALUES
 (1, 'General Admission', 'No assigned seating. Seating is self-selected on a first-come, first serve basis.');
+
+--
+-- Dumping data for table `character`
+--
 
 INSERT INTO `character` (`id`, `name`, `gender`, `description`, `age_range`, `script_id`) VALUES
 (1, 'Sir William Lucas', 'M', NULL, NULL, 1),
@@ -160,11 +203,53 @@ INSERT INTO `character` (`id`, `name`, `gender`, `description`, `age_range`, `sc
 (28, 'Mr. Denny', 'M', NULL, NULL, 1),
 (29, 'Colonel Fitzwilliam', 'M', NULL, NULL, 1);
 
+--
+-- Dumping data for table `collaborator_role`
+--
+
+INSERT INTO `collaborator_role` (`id`, `title`, `description`, `role_type_id`) VALUES
+(1, 'stage manager', NULL, 1),
+(2, 'assistant stage manager', NULL, 1),
+(3, 'director', NULL, 2),
+(4, 'scenic designer', NULL, 1),
+(5, 'lighting designer', NULL, 1),
+(6, 'costume designer', NULL, 1),
+(7, 'sound designer', NULL, 1),
+(8, 'dramaturg', NULL, 1),
+(9, 'dance choreographer', NULL, 1),
+(10, 'dialect coach', NULL, 1),
+(11, 'actor', NULL, 1),
+(12, 'playwright', NULL, 3),
+(13, 'novelist', NULL, 3),
+(14, 'adapter', 'Someone who creates a script by adapting a another work from some other medium. Often adaptations of novels are created, but other things could be adapted for the stage.', 3);
+
+--
+-- Dumping data for table `show`
+--
+
+INSERT INTO `show` (`id`, `name`, `running_time`, `producer_id`, `show_notes`) VALUES
+(1, 'Pride and Prejudice', 220, 3, NULL);
+
+--
+-- Dumping data for table `staging_of_script`
+--
+
+INSERT INTO `staging_of_script` (`id`, `script_id`, `staging_id`) VALUES
+(1, 1, 1);
+
+--
+-- Dumping data for table `ticket_scheme`
+--
+
 INSERT INTO `ticket_scheme` (`id`, `name`, `description`, `producer_id`) VALUES
 (1, 'Standard', 'Standard ticket pricing scheme for Book-It productions.', 3),
 (2, 'Opening Night Pricing', 'Opening night ticket pricing scheme for Book-It productions.', 3),
 (3, 'Preview Pricing', 'Preview ticket pricing scheme for Book-It productions.', 3),
 (4, 'Pay What You Will', 'Pay what you will ticket pricing scheme for Book-It productions.', 3);
+
+--
+-- Dumping data for table `venue`
+--
 
 INSERT INTO `venue` (`id`, `name`, `address_id`) VALUES
 (1, 'ACT Theatre', 1),
@@ -193,9 +278,60 @@ INSERT INTO `venue` (`id`, `name`, `address_id`) VALUES
 (24, 'Theater Schmeater', 24),
 (25, 'The Market Theater', 25);
 
-INSERT INTO `writer_contributed_to_script` (`id`, `writer_id`, `script_id`, `capacity`) VALUES
-(1, 1, 1, 'novelist'),
-(2, 2, 1, 'adapter');
+--
+-- Dumping data for table `actor_playing_character`
+--
+
+INSERT INTO `actor_playing_character` (`id`, `actor_id`, `character_id`, `staging_id`) VALUES
+(1, 3, 1, 1),
+(2, 3, 2, 1),
+(3, 4, 3, 1),
+(4, 4, 4, 1),
+(5, 4, 5, 1),
+(6, 4, 6, 1),
+(7, 5, 7, 1),
+(8, 5, 8, 1),
+(9, 6, 9, 1),
+(10, 7, 10, 1),
+(11, 7, 11, 1),
+(12, 8, 12, 1),
+(13, 9, 13, 1),
+(14, 9, 14, 1),
+(15, 10, 15, 1),
+(16, 11, 16, 1),
+(17, 12, 17, 1),
+(18, 12, 18, 1),
+(19, 13, 19, 1),
+(20, 13, 20, 1),
+(21, 14, 21, 1),
+(22, 15, 22, 1),
+(23, 16, 23, 1),
+(24, 16, 24, 1),
+(25, 19, 25, 1),
+(26, 19, 26, 1),
+(27, 19, 27, 1),
+(28, 19, 28, 1),
+(29, 19, 29, 1);
+
+--
+-- Dumping data for table `collaborator_role_in_staging`
+--
+
+INSERT INTO `collaborator_role_in_staging` (`id`, `collaborator_id`, `role_id`, `staging_id`) VALUES
+(1, 17, 1, 1),
+(2, 18, 2, 1),
+(3, 2, 3, 1),
+(4, 20, 4, 1),
+(5, 21, 5, 1),
+(6, 22, 6, 1),
+(7, 23, 7, 1),
+(8, 24, 8, 1),
+(9, 25, 9, 1),
+(10, 26, 10, 1);
+
+--
+-- Dumping data for table `performance_space`
+--
 
 INSERT INTO `performance_space` (`id`, `name`, `seat_count`, `configurable_seating`, `flavor_text`, `venue_id`) VALUES
 (1, 'The Falls Theatre', 409, 0, 'Never more than 30 feet from the stage, this thrust stage (where audiences surround all three sides) is named after ACT''s founder Gregory A. Falls. Located downstairs.', 1),
@@ -230,6 +366,10 @@ INSERT INTO `performance_space` (`id`, `name`, `seat_count`, `configurable_seati
 (30, 'Theater Schmeater', NULL, NULL, NULL, 24),
 (31, 'The Market Theater', NULL, 0, NULL, 25);
 
+--
+-- Dumping data for table `priced_ticket`
+--
+
 INSERT INTO `priced_ticket` (`id`, `ticket_type_id`, `price_id`, `scheme_id`) VALUES
 (1, 1, 1, 1),
 (2, 1, 2, 1),
@@ -250,92 +390,11 @@ INSERT INTO `priced_ticket` (`id`, `ticket_type_id`, `price_id`, `scheme_id`) VA
 (18, 1, 5, 3),
 (19, 1, 6, 3);
 
-INSERT INTO `ticketing_for_producing_org` (`id`, `producer_id`, `ticketing_scheme_id`) VALUES
-(1, 3, 1);
+--
+-- Dumping data for table `scheduled_showing`
+--
 
-INSERT INTO `producers_main_space` (`id`, `producer_id`, `space_id`) VALUES
-(1, 3, 7),
-(2, 5, 9),
-(3, 12, 7);
-
-INSERT INTO `producer_admins_space` (`id`, `producer_id`, `space_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 1, 3),
-(4, 1, 4),
-(5, 1, 5),
-(6, 8, 10),
-(7, 9, 11),
-(8, 9, 12),
-(9, 10, 13),
-(10, 11, 14),
-(11, 11, 15),
-(12, 13, 16),
-(13, 14, 17),
-(14, 15, 18),
-(15, 15, 19),
-(16, 16, 20),
-(17, 17, 22),
-(18, 19, 23),
-(19, 20, 24),
-(20, 23, 25),
-(21, 25, 26),
-(22, 27, 27),
-(23, 28, 28),
-(24, 29, 29),
-(25, 30, 30),
-(26, 31, 31);
-
-INSERT INTO `production` (`id`, `name`, `running_time`, `script_id`, `producer_id`, `performance_space_id`, `production_notes`, `is_premiere`, `intermission_count`) VALUES
-(1, 'Pride and Prejudice', 220, 1, 3, 7, 'Our first foray into adapting the novels of Miss Jane Austen, P&P is replete with the author’s charm, wit, and keen observations. Her comedy of manners and courtship boasts a cast of beloved and unforgettable characters led by the extraordinary Elizabeth Bennet and the dashing Mister Darcy. Book-It is delighted to once again stage the classic favorite for new and returning audiences this holiday season.', 0, NULL);
-
-INSERT INTO `actor_playing_character` (`id`, `actor_id`, `character_id`, `production_id`) VALUES
-(1, 3, 1, 1),
-(2, 3, 2, 1),
-(3, 4, 3, 1),
-(4, 4, 4, 1),
-(5, 4, 5, 1),
-(6, 4, 6, 1),
-(7, 5, 7, 1),
-(8, 5, 8, 1),
-(9, 6, 9, 1),
-(10, 7, 10, 1),
-(11, 7, 11, 1),
-(12, 8, 12, 1),
-(13, 9, 13, 1),
-(14, 9, 14, 1),
-(15, 10, 15, 1),
-(16, 11, 16, 1),
-(17, 12, 17, 1),
-(18, 12, 18, 1),
-(19, 13, 19, 1),
-(20, 13, 20, 1),
-(21, 14, 21, 1),
-(22, 15, 22, 1),
-(23, 16, 23, 1),
-(24, 16, 24, 1),
-(25, 19, 25, 1),
-(26, 19, 26, 1),
-(27, 19, 27, 1),
-(28, 19, 28, 1),
-(29, 19, 29, 1);
-
-INSERT INTO `collaborator_role_in_production` (`id`, `collaborator_id`, `role_id`, `production_id`) VALUES
-(1, 17, 1, 1),
-(2, 18, 2, 1),
-(3, 2, 3, 1),
-(4, 20, 4, 1),
-(5, 21, 5, 1),
-(6, 22, 6, 1),
-(7, 23, 7, 1),
-(8, 24, 8, 1),
-(9, 25, 9, 1),
-(10, 26, 10, 1);
-
-INSERT INTO `production_part_of_season` (`id`, `season_id`, `production_id`) VALUES
-(1, 1, 1);
-
-INSERT INTO `scheduled_show` (`id`, `production_id`, `showtime`, `doors_before`, `show_type`) VALUES
+INSERT INTO `scheduled_showing` (`id`, `show_id`, `showtime`, `doors_before`, `show_type`) VALUES
 (1, 1, '2014-11-25 19:30:00', NULL, 'pay what you can'),
 (2, 1, '2014-11-26 19:30:00', NULL, 'preview'),
 (3, 1, '2014-11-28 19:30:00', NULL, 'opening'),
@@ -369,11 +428,89 @@ INSERT INTO `scheduled_show` (`id`, `production_id`, `showtime`, `doors_before`,
 (31, 1, '2014-12-27 19:30:00', NULL, NULL),
 (32, 1, '2014-12-28 14:00:00', NULL, NULL);
 
+--
+-- Dumping data for table `show_order`
+--
+
+INSERT INTO `show_order` (`id`, `show_id`, `staging_id`, `order`) VALUES
+(1, 1, 1, 1);
+
+--
+-- Dumping data for table `show_part_of_season`
+--
+
+INSERT INTO `show_part_of_season` (`id`, `season_id`, `show_id`) VALUES
+(1, 1, 1);
+
+--
+-- Dumping data for table `ticketing_for_producing_org`
+--
+
+INSERT INTO `ticketing_for_producing_org` (`id`, `producer_id`, `ticketing_scheme_id`) VALUES
+(1, 3, 1);
+
+--
+-- Dumping data for table `ticketing_for_showing`
+--
+
 INSERT INTO `ticketing_for_showing` (`id`, `showing_id`, `ticketing_scheme_id`) VALUES
 (1, 1, 4),
 (2, 2, 3),
 (3, 3, 2);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Dumping data for table `writer_contributed_to_script`
+--
+
+INSERT INTO `writer_contributed_to_script` (`id`, `writer_id`, `script_id`, `contribution_id`) VALUES
+(1, 1, 1, 13),
+(2, 2, 1, 14);
+
+--
+-- Dumping data for table `producers_main_space`
+--
+
+INSERT INTO `producers_main_space` (`id`, `producer_id`, `space_id`) VALUES
+(1, 3, 7),
+(2, 5, 9),
+(3, 12, 7);
+
+--
+-- Dumping data for table `producer_admins_space`
+--
+
+INSERT INTO `producer_admins_space` (`id`, `producer_id`, `space_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 8, 10),
+(7, 9, 11),
+(8, 9, 12),
+(9, 10, 13),
+(10, 11, 14),
+(11, 11, 15),
+(12, 13, 16),
+(13, 14, 17),
+(14, 15, 18),
+(15, 15, 19),
+(16, 16, 20),
+(17, 17, 22),
+(18, 19, 23),
+(19, 20, 24),
+(20, 23, 25),
+(21, 25, 26),
+(22, 27, 27),
+(23, 28, 28),
+(24, 29, 29),
+(25, 30, 30),
+(26, 31, 31);
+
+--
+-- Dumping data for table `space_for_producing_org`
+--
+
+INSERT INTO `space_for_producing_org` (`id`, `space_id`, `producer_id`) VALUES
+(1, 7, 3);
+
