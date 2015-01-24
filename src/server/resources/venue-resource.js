@@ -4,14 +4,16 @@
  */
 
 var mysql = require('mysql');
-var queries = require('./home-queries');
+var queries = require('./venue-queries');
 
 /**
  * Home page actions.
  */
 
-module.exports = {
-  loadPage: function (actionContext, payload, done) {
+var VenueResource = {
+  name: 'venue',
+
+  read: function(req, resource, params, config, callback) {
     var connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
@@ -21,15 +23,16 @@ module.exports = {
 
     connection.connect();
 
-    connection.query(queries.retrieveVenues, function(err, rows) {
+    connection.query(queries.readVenues, function(err, rows) {
       if (err) {
-        throw err;
+        callback(err);
+      } else {
+        callback(null, rows);
       }
-
-      actionContext.dispatch('venuesLoaded', rows);
-      done();
     });
 
     connection.end();
   }
 };
+
+module.exports = VenueResource;

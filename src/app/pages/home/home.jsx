@@ -6,8 +6,10 @@
 var React = require('react');
 var StoreMixin = require('fluxible').StoreMixin;
 var GoogleMapsStore = require('../../maps/google-maps-store');
+var VenueStore = require('./venue-store');
 var NavLink = require('../../nav/nav-link');
 var loadGoogleMapsAction = require('../../maps/load-google-maps-action');
+var homePageActions = require('./home-page-actions');
 
 /**
  * Home page.
@@ -16,7 +18,8 @@ var loadGoogleMapsAction = require('../../maps/load-google-maps-action');
 module.exports = React.createClass({
   mixins: [StoreMixin],
   statics: {
-    storeListeners: [GoogleMapsStore]
+    storeListeners: [GoogleMapsStore, VenueStore],
+    initializeAction: homePageActions.initializePage
   },
   getInitialState: function () {
     var venues = this.props.context.getStore('venue').getVenues();
@@ -65,22 +68,30 @@ module.exports = React.createClass({
   },
   onChange: function () {
     var mapsIsReady = this.props.context.getStore('google-maps').isReady();
+    var venues = this.props.context.getStore('venue').getVenues();
+
     if (mapsIsReady) {
       this.renderMap();
     }
+    this.setState({
+      venues: venues
+    });
   },
   renderMap: function () {
-    var mapOptions = {
-      center: { lat: 47.614848, lng: -122.3359059},
-      zoom: 12
-    };
-    var map = new google.maps.Map(this.refs.mapCanvas.getDOMNode(), mapOptions);
+    if (!this.map) {
+      var mapOptions = {
+        center: { lat: 47.614848, lng: -122.3359059},
+        zoom: 12
+      };
+      var map = new google.maps.Map(this.refs.mapCanvas.getDOMNode(), mapOptions);
 
-    try { window.map = map; } catch (e) {} // for test.
+      try { window.map = map; } catch (e) {} // for test.
 
-    this.map = map;
-    this.mapMarkers = {};
-    this.updatePins();  
+      this.map = map;
+      this.mapMarkers = {}; 
+    }
+
+    this.updatePins(); 
   },
   updatePins: function () {
     var venues = this.props.context.getStore('venue').getVenues();
