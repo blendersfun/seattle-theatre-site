@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `priced_ticket` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ticket_type_id` int(10) unsigned NOT NULL,
   `price_id` int(10) unsigned NOT NULL,
   `scheme_id` int(10) unsigned NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `priced_ticket` (
   KEY `ticket_type_id` (`ticket_type_id`),
   KEY `price_id` (`price_id`),
   KEY `scheme_id` (`scheme_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 ALTER TABLE `priced_ticket`
   ADD CONSTRAINT `priced_ticket_belongs_to_scheme_fkey` FOREIGN KEY (`scheme_id`) REFERENCES `ticket_scheme` (`id`) ON DELETE CASCADE,

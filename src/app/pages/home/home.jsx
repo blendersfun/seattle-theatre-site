@@ -38,9 +38,9 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-      <div id="home-page">
-        <div id="map-canvas" ref="mapCanvas"></div>
-        <div id="list">
+      <div className="homePage">
+        <div className="homePage-mapCanvas" ref="mapCanvas"></div>
+        <div className="homePage-list">
           <ul>
           {this.state.venues.map(function (venue) {
             return <li key={venue.id}>
@@ -83,7 +83,7 @@ module.exports = React.createClass({
         center: { lat: 47.614848, lng: -122.3359059},
         zoom: 12
       };
-      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      var map = new google.maps.Map(this.refs.mapCanvas.getDOMNode(), mapOptions);
 
       try { window.map = map; } catch (e) {} // for test.
 

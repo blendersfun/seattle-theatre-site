@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS `collaborator_usual_role` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `collaborator_id` int(10) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `collaborator_id` (`collaborator_id`,`role_id`),
-  KEY `role_id` (`role_id`)
+  KEY `role_id` (`role_id`),
+  KEY `collaborator_id` (`collaborator_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `collaborator_usual_role`
