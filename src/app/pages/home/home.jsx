@@ -71,28 +71,27 @@ module.exports = React.createClass({
     var venues = this.props.context.getStore('venue').getVenues();
 
     if (mapsIsReady) {
-      if (!this.map) {
-        this.renderMap();
-      } else {
-        this.updatePins();
-      }
+      this.renderMap();
     }
     this.setState({
       venues: venues
     });
   },
   renderMap: function () {
-    var mapOptions = {
-      center: { lat: 47.614848, lng: -122.3359059},
-      zoom: 12
-    };
-    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    if (!this.map) {
+      var mapOptions = {
+        center: { lat: 47.614848, lng: -122.3359059},
+        zoom: 12
+      };
+      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-    try { window.map = map; } catch (e) {} // for test.
+      try { window.map = map; } catch (e) {} // for test.
 
-    this.map = map;
-    this.mapMarkers = {};
-    this.updatePins();  
+      this.map = map;
+      this.mapMarkers = {}; 
+    }
+
+    this.updatePins(); 
   },
   updatePins: function () {
     var venues = this.props.context.getStore('venue').getVenues();
