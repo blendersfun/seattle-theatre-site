@@ -6,12 +6,14 @@
 var express = require('express');
 var React = require('react');
 var serializeJavascript = require('serialize-javascript');
+var bodyParser = require('body-parser');
 
 var fluxApp = require('../app/app');
 var basePage = React.createFactory(require('../app/base'));
 var navigateAction = require('../app/nav/navigate-action');
 
 var venueResource = require('./resources/venue-resource');
+var personResource = require('./resources/person-resource');
 
 /**
  * Create an express application.
@@ -30,6 +32,7 @@ expressApp.use(express.static('dist/public'));
  */
 
 var fetchrInstance = fluxApp.getPlugin('FetchrPlugin');
+expressApp.use(bodyParser.json());
 expressApp.use(fetchrInstance.getXhrPath(), fetchrInstance.getMiddleware());
 
 /**
@@ -37,6 +40,7 @@ expressApp.use(fetchrInstance.getXhrPath(), fetchrInstance.getMiddleware());
  */
 
 fetchrInstance.registerService(venueResource);
+fetchrInstance.registerService(personResource);
 
 /**
  * Serve application page requests.

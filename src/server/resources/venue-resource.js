@@ -7,11 +7,11 @@ var mysql = require('mysql');
 var queries = require('./venue-queries');
 
 /**
- * Home page actions.
+ * Venue
  */
 
 var VenueResource = {
-  name: 'venue',
+  name: 'venues',
 
   read: function(req, resource, params, config, callback) {
     var connection = mysql.createConnection({

@@ -9,7 +9,7 @@ var createStore = require('../../core/create-store');
  * A store to manage theatrical venues.
  */
 
-var NavigateStore = createStore({
+var VenueStore = createStore({
   initialize: function () {
     this.state = {
       venues: []
@@ -65,4 +65,4 @@ var NavigateStore = createStore({
   }
 });
 
-module.exports = NavigateStore;
+module.exports = VenueStore;

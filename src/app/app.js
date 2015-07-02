@@ -35,12 +35,14 @@ app.plug(fetchrPlugin({
 app.registerStore(require('./nav/navigate-store'));
 app.registerStore(require('./maps/google-maps-store'));
 app.registerStore(require('./pages/home/venue-store'));
+app.registerStore(require('./pages/update-production/update-production-store'));
 
 /**
  * Register pages.
  */
 
 pageRegistry.registerPage('home', require('./pages/home/home'));
+pageRegistry.registerPage('updateProduction', require('./pages/update-production/update-production'));
 pageRegistry.registerPage('testPage', require('./pages/test'));
 
 /**

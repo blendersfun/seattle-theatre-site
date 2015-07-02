@@ -5,7 +5,7 @@
 
 var HomePageActions = {
   initializePage: function (actionContext, payload, done) {
-    actionContext.service.read('venue', {}, function (err, data) {
+    actionContext.service.read('venues', {}, function (err, data) {
       if (err) {
         done(err);
       } else {
